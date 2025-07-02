@@ -44,12 +44,26 @@
           <img :src="block.img" :alt="block.alt" />
         </div>
       </article>
+
+      <!-- Modal -->
+      <div v-if="showModal" class="modal-backdrop" @click.self="closeModal">
+        <div class="modal-content">
+          <button @click="closeModal" class="modal-close-btn">
+            <i class="bi bi-x"></i>
+          </button>
+          <div class="modal-content-tcc-terms">
+            <TCCTerms></TCCTerms>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import TCCTerms from "../components/TCCTerms.vue";
+
+import { ref, onMounted } from "vue";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -60,6 +74,15 @@ import joinuspageImg3 from "../assets/JoinUsImg3.avif";
 import joinuspageImg4 from "../assets/JoinUsImg4.avif";
 import joinuspageImg5 from "../assets/JoinUsImg5.avif";
 
+// 控制Modal開啟與關閉
+const showModal = ref(false);
+const openModal = () => {
+  showModal.value = true;
+};
+const closeModal = () => {
+  showModal.value = false;
+};
+
 const blocks = [
   {
     title: "如何參加報名 TCC 的活動？",
@@ -68,8 +91,8 @@ const blocks = [
       "APP 的使用者體驗跟 LINE 等的社群軟體很相似，相信是會很好上手的！"
     ],
     buttons: [
-      { label: "參加TCC會員表單", link: "#"},
-      { label: "BAND APP連結", link: "#"}
+      { label: "參加TCC會員表單", link: "https://docs.google.com/forms/d/e/1FAIpQLSdH8OYcQ6nxXlBrX_LzDaw0k9TNCm3F1aHedy4VCOZXtaV_Tg/viewform"},
+      { label: "BAND APP連結", link: "https://www.band.us/home"}
     ],
     img: joinuspageImg1,
     alt: "如何報名圖"
@@ -78,7 +101,7 @@ const blocks = [
     title: "如何註冊成為TCC的會員？",
     paragraphs: ["在本網站內的報名表上，填寫相關的個人資料、同意條款和切結書類...就可以了！"],
     buttons: [
-      { label: "參加TCC會員表單", link: "#"}
+      { label: "參加TCC會員表單", link: "https://docs.google.com/forms/d/e/1FAIpQLSdH8OYcQ6nxXlBrX_LzDaw0k9TNCm3F1aHedy4VCOZXtaV_Tg/viewform"}
     ],
     img: joinuspageImg2,
     alt: "會員註冊圖"
@@ -99,7 +122,7 @@ const blocks = [
     title: "活動中拍的作品分享",
     paragraphs: ["TCC 是以出去玩和交流為主攝影社團，在活動中想必希望拍出很多好玩的回憶和精彩作品。但為了保護參加者的肖像權， 請不要隨意地公開照片。參與過外拍活動的會員，將會提供另外的「TCC 相簿」於 BAND 社團，參加者可以在相簿中自由分享自己在活動中拍的作品， 互相交流。會員在參加前會知悉同意條款，包括照片的個人使用和公開的規範，因此 TCC 團隊若發現規約數次違反者， 將會以退出社團帳號作為處分。而我們團隊在退會處分的對應範圍之外，從照片或活動相關的紛爭或不便之處，TCC 將不負任何責任。"],
     buttons: [
-      { label: "TCC條款", link: "#"}
+      { label: "TCC條款", link: openModal }
     ],
     img: joinuspageImg5,
     alt: "作品分享"
@@ -107,7 +130,11 @@ const blocks = [
 ];
 
 const goTo = (link) => {
-  window.open(link, "_blank");
+  if (typeof link === "function") {
+    link();
+  } else {
+    window.open(link, "_blank");
+  }
 };
 
 onMounted(() => {
@@ -122,6 +149,18 @@ onMounted(() => {
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
+  animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 .second-joinuspage {
@@ -156,6 +195,7 @@ onMounted(() => {
   margin: 6px;
   border-radius: 8px;
   font-weight: bold;
+  cursor: default;
 }
 
 .step:hover {
@@ -165,6 +205,7 @@ onMounted(() => {
 .arrow {
   font-size: 24px;
   margin: 0 6px;
+  cursor: default;
 }
 
 /* 主區塊 */
@@ -224,5 +265,49 @@ onMounted(() => {
   .article-image {
     margin-bottom: 20px;
   }
+}
+
+/* TCC條款button的Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #3a3a3a;
+  color: #fafafa;
+  padding: 0;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  overflow: hidden; /* 保證圓角遮住捲動內容 */
+  position: relative; /* 讓close button定位在右上 */
+}
+
+.modal-close-btn {
+  cursor: pointer;
+  padding: 6px 6px;
+  font-size: 36px;
+  background-color: rgba(250, 250, 250, 0);
+  color: #cacaca;
+  border: none;
+  position: absolute;
+  top: 12px;
+  right: 18px;
+}
+
+.modal-close-btn:hover {
+  color: #f0f0f0;
+}
+
+.modal-content-tcc-terms {
+  padding: 36px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 </style>

@@ -46,7 +46,7 @@ const menuOpen = ref(false);
   /* width: 100vw; */
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 99;
   display: flex;
   justify-content: space-between;
   align-items: center;

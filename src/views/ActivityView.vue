@@ -5,47 +5,54 @@
       <h1>活動</h1>
 
       <div class="activity-cards">
-        <article class="activity-card">
-          <img :src="Activity01" alt="9月份活動預告圖" class="activity-image" />
+        <article
+          class="activity-card"
+          v-for="item in posts"
+          :key="item.id"
+        >
+          <router-link :to="`/activity/${item.id}`"><img :src="item.image" alt="活動主圖" class="activity-image" /></router-link>
           <div class="activity-content">
-            <h2 class="activity-title">Taipei Camera Club 9月份活動行程，我們回來了！</h2>
+            <h2 class="activity-title">{{ item.date }}({{ item.weekday }}) {{ item.subtitle }} {{ item.title }}</h2>
             <p class="activity-text">
-              [Taipei Camera Club 9月份活動行程，我們回來了！] ・ 經過漫長的疫情生活，暑假也結束準備返校，大家久等了！我們TCC也迫不期待跟大家見面舉辦攝影活動！我們...
-              <a href="#">查看更多</a>
-            </p>
-          </div>
-        </article>
-
-        <article class="activity-card">
-          <img :src="Activity02" alt="9/4 40th活動圖" class="activity-image" />
-          <div class="activity-content">
-            <h2 class="activity-title">9/4 (Sat.) 40th 台北後站 街區探索</h2>
-            <p class="activity-text">
-              睽違許久，TCC即將再次舉辦實體外拍！本週的外拍將來到台北車站後站地區，途經捷運中山站、長安西路與太原路一帶，在都會區找到不一樣的風景！ 仔細走在街道上，...
-              <a href="#">查看更多</a>
-            </p>
-          </div>
-        </article>
-
-        <article class="activity-card">
-          <img :src="Activity03" alt="8/14 38th活動圖" class="activity-image" />
-          <div class="activity-content">
-            <h2 class="activity-title">8/14 (Sat) TCC38th 「Lightroom修圖有什麼魅力？修圖操作入門」</h2>
-            <p class="activity-text">
-              買了相機，出去拍照捕捉美景和回憶，但有時可能會覺得拍出來的照片還差一些味道。修圖是可以讓照片更傑出的方式之一，例如在IG上傳照片前會有提供調整照片的亮暗，顏色，濾鏡等來調整。 除了在IG之外，很多攝影愛...
-              <a href="#">查看更多</a>
+              {{ item.preview }}
+              <router-link :to="`/activity/${item.id}`">閱讀更多</router-link>
             </p>
           </div>
         </article>
       </div>
     </section>
+    <router-view v-if="$route.params.id"></router-view>
   </div>
 </template>
 
 <script setup>
-import Activity01 from "../assets/ActivityImg01.avif";
-import Activity02 from "../assets/ActivityImg02.avif";
-import Activity03 from "../assets/ActivityImg03.avif";
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+
+const posts = ref([]);
+
+onMounted(async () => {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/1v79jdc-uDdTTY6utmpRfF1AFxi4yK1OiHj0ZpeDqGNk/values/TCC_web_activities_data!A1:H51?key=AIzaSyDaYWQfUwStmkZp48GElCLiHLPhbsTarAY`;
+  const { data } = await axios.get(url);
+
+  posts.value = data.values.slice(1).map(row => {
+    const content = row[6] || ""; // 保證content至少是空字串，而不是undefined（根本不存在這格）
+    const textContent = content.replace(/<[^>]*>/g, ''); // 移除html標籤
+    const preview = textContent.slice(0, 100) + (textContent.length > 60 ? '...' : '');
+
+    return {
+      id: row[0],
+      subtitle: row[1],
+      title: row[2],
+      date: row[3],
+      weekday: row[4],
+      author: row[5],
+      content, // 此為html格式
+      image: row[7],
+      preview
+    };
+  });
+});
 </script>
 
 <style scoped>
@@ -55,6 +62,18 @@ import Activity03 from "../assets/ActivityImg03.avif";
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
+  animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 .second-activitypage {
@@ -75,8 +94,9 @@ import Activity03 from "../assets/ActivityImg03.avif";
   width: 100%;
   max-width: 960px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 15px;
+
 }
 
 .activity-card {
@@ -86,6 +106,10 @@ import Activity03 from "../assets/ActivityImg03.avif";
   background-color: #fafafa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
+}
+
+.activity-card:hover {
+  background-color: #f0f0f0;
 }
 
 .activity-image {

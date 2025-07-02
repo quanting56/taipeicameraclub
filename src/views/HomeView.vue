@@ -11,59 +11,22 @@
         </div>
       </div>
     </section>
+
     <section class="second-homepage">
-      <div class="section-block reverse">
+      <div
+        class="section-block"
+        :class="{ reverse: index % 2 === 0 }"
+        v-for="(block, index) in blocks"
+        :key="index"
+        data-aos="fade-up"
+      >
         <div class="text-side">
-          <h2>社團介紹</h2>
-          <h3>About Us</h3>
-          <button>更多資訊</button>
+          <h2>{{ block.title }}</h2>
+          <h3>{{ block.subtitle }}</h3>
+          <button @click="goTo(block.path)">更多資訊</button>
         </div>
         <div class="image-side">
-          <img :src="AboutImg" alt="about image" />
-        </div>
-      </div>
-
-      <div class="section-block">
-        <div class="text-side">
-          <h2>活動</h2>
-          <h3>Activities</h3>
-          <button>更多資訊</button>
-        </div>
-        <div class="image-side">
-          <img :src="ActivityImg" alt="activity image" />
-        </div>
-      </div>
-
-      <div class="section-block reverse">
-        <div class="text-side">
-          <h2>社團幹部</h2>
-          <h3>Management Team</h3>
-          <button>更多資訊</button>
-        </div>
-        <div class="image-side">
-          <img :src="ManagementTeamImg" alt="management team image" />
-        </div>
-      </div>
-
-      <div class="section-block">
-        <div class="text-side">
-          <h2>加入TCC</h2>
-          <h3>Join Us!</h3>
-          <button>更多資訊</button>
-        </div>
-        <div class="image-side">
-          <img :src="JoinUsImg" alt="join us image" />
-        </div>
-      </div>
-
-      <div class="section-block reverse">
-        <div class="text-side">
-          <h2>社團Q&A</h2>
-          <h3>Questions</h3>
-          <button>更多資訊</button>
-        </div>
-        <div class="image-side">
-          <img :src="SomeQuestionsImg" alt="questions image" />
+          <img :src="block.img" :alt="block.alt" />
         </div>
       </div>
     </section>
@@ -71,11 +34,64 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import AboutImg from "../assets/AboutBannerImg.avif";
 import ActivityImg from "../assets/ActivityBannerImg.avif";
 import ManagementTeamImg from "../assets/ManagementTeamBannerImg.avif";
 import JoinUsImg from "../assets/JoinUsBannerImg.avif";
 import SomeQuestionsImg from "../assets/SomeQuestionsBannerImg.avif";
+
+const blocks = [
+  {
+    title: "社團介紹",
+    subtitle: "About Us",
+    img: AboutImg,
+    alt: "about image",
+    path: "/about"
+  },
+  {
+    title: "活動",
+    subtitle: "Activities",
+    img: ActivityImg,
+    alt: "activity image",
+    path: "/activity"
+  },
+  {
+    title: "社團幹部",
+    subtitle: "Management Team",
+    img: ManagementTeamImg,
+    alt: "management team image",
+    path: "/management_team"
+  },
+  {
+    title: "加入TCC",
+    subtitle: "Join Us!",
+    img: JoinUsImg,
+    alt: "join us image",
+    path: "/join_us"
+  },
+  {
+    title: "社團Q&A",
+    subtitle: "Questions",
+    img: SomeQuestionsImg,
+    alt: "questions image",
+    path: "/some_questions"
+  }
+];
+
+const router = useRouter();
+
+const goTo = (path) => {
+  router.push(path);
+};
+
+onMounted(() => {
+  AOS.init();
+});
 </script>
 
 <style scoped>
