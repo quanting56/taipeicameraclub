@@ -14,7 +14,7 @@
           class="qa-question"
           :class="{ open: showDetails[index] }"
         >
-          <span class="arrow" :class="{ open: showDetails[index] }">▲</span>
+          <span class="arrow" :class="{ open: showDetails[index] }">▶</span>
           {{ block.question }}
         </h2>
         <transition name="collapse">
@@ -207,7 +207,7 @@ const goTo = (link) => {
 }
 
 .qa-question .arrow.open {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
 
 .collapse-enter-active,
