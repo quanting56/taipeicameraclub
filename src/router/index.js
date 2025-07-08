@@ -61,7 +61,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/taipeicameraclub/'),
   routes,
   scrollBehavior(to, from, savePosition) {
     // 判斷是否為/activity與/activity/:id之間的跳轉
