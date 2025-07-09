@@ -1,0 +1,1 @@
+import{T as t}from"./TCCTerms-DAtUw8zN.js";import{_ as c,c as o,b as s,j as a,d as r}from"./index-C9obOclo.js";const _={class:"termspage"},n={class:"second-termspage"},m={__name:"TccTermsView",setup(p){return(d,e)=>(r(),o("div",_,[e[0]||(e[0]=s("section",{class:"first-termspage"},null,-1)),s("section",n,[a(t)])]))}},T=c(m,[["__scopeId","data-v-d23b1317"]]);export{T as default};
