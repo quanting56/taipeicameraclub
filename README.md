@@ -88,10 +88,6 @@ npm run build
 # 網站部署於 gh-pages branch
 ```
 
-## 開發者
-
-本案由 **[quanting56](https://github.com/quanting56)** 開發與維護。
-
 ## 專案結構
 
 ```cs
@@ -112,3 +108,7 @@ taipeicameraclub/
 ├─ README.md
 └─ vite.config.js
 ```
+
+## 開發者
+
+本案由 **[quanting56](https://github.com/quanting56)** 開發與維護。
