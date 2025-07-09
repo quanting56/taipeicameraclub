@@ -85,7 +85,9 @@ base: '/taipeicameraclub/'
 npm run build
 
 # 推送 dist 內容到 GitHub Pages
-# 網站部署於 gh-pages branch
+npx gh-pages -d dist
+
+# 網站已部署於 gh-pages branch
 ```
 
 ## 專案結構
