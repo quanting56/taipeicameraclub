@@ -10,7 +10,7 @@
         </p>
         <p>
           聯絡方式：Instagram私訊<br>
-          資料最後更新時間：<time datetime="2025-07-09T20:02">2025/07/09 20:02</time>
+          資料最後更新時間：<time datetime="2025-07-12T23:13">2025/07/12 23:13</time>
         </p>
         <p>&copy; 2025 Taipei Camera Club. All Rights Reserved</p>
       </div>
