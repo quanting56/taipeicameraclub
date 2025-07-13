@@ -1,9 +1,9 @@
 <template>
   <div class="homepage">
     <section class="first-homepage">
-      <div class="first-homepage-text">
+      <div class="first-homepage-text" :style="{ opacity: textOpacity }">
         <h1>Enjoy Photo, From Taipei</h1>
-        <h2>在台北，享受攝影</h2>
+        <h2>在臺北，享受攝影</h2>
         <h3><small>with ~ </small>Taipei Camera Club</h3>
         <div class="social-icons">
           <a href="https://www.facebook.com/taipeicameraclub" target="_blank"><i class="bi bi-facebook"></i></a>
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -89,8 +89,25 @@ const goTo = (path) => {
   router.push(path);
 };
 
+// .first-homepage-text文字捲動效果
+const textOpacity = ref(1);
+
+const handleScroll = () => {
+  const scrollY = window.scrollY;
+  const fadeStart = window.innerHeight * 1.4;
+  const fadeEnd = window.innerHeight * 1.5;
+  // 用Math.min()和Math.max()確保 0 <= progress <= 1
+  const progress = Math.min(1, Math.max(0, ( scrollY - fadeStart ) / ( fadeEnd - fadeStart )));
+  textOpacity.value = 1 - progress;
+}
+
 onMounted(() => {
   AOS.init();
+  window.addEventListener("scroll", handleScroll);
+});
+
+onBeforeMount(() => {
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
@@ -103,30 +120,27 @@ onMounted(() => {
   background-repeat: no-repeat;
   color: #fafafa;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  animation: fadeIn 1.5s ease;
   position: relative;
+  
+}
+
+.first-homepage-text {
+  position: fixed;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  animation: fadeIn 1s ease;
+  transition: opacity 0.5s ease; /* 讓 opacity 更平滑 */
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0px);
   }
-}
-
-.first-homepage-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 20px;
 }
 
 .social-icons {
