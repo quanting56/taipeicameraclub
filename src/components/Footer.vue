@@ -3,14 +3,14 @@
     <div class="footer-container">
       <div class="footer-left">
         <p>
-          內文撰寫｜中山、冠穎<br>
+          內文撰寫｜中山、冠穎（冠霆）<br>
           製&emsp;&emsp;圖｜中山<br>
-          網&emsp;&emsp;頁｜冠穎<br>
+          網&emsp;&emsp;頁｜冠穎（冠霆）<br>
           攝&emsp;&emsp;影｜中山<br>
         </p>
         <p>
           聯絡方式：Instagram私訊<br>
-          資料最後更新時間：<time datetime="2025-07-12T23:13">2025/07/12 23:13</time>
+          資料最後更新時間：<time datetime="2025-07-17T13:50">2025/07/17 13:50</time>
         </p>
         <p>&copy; 2025 Taipei Camera Club. All Rights Reserved</p>
       </div>
